@@ -23,7 +23,7 @@ def send_welcome(message: Message):
 def all_text(message: Message):
     if message.text.lower() == "ufc":
         bot.send_message(text=parse_latest_fight(), chat_id=message.chat.id, parse_mode='Markdown')
-    if message.text.lower() == "ufc":
+    if message.text.lower() == "healthcheck":
         bot.send_message(text=parse_latest_fight(), chat_id=message.chat.id, parse_mode='I am working')
 
 
