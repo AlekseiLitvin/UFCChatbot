@@ -24,7 +24,7 @@ def all_text(message: Message):
     if message.text.lower() == "ufc":
         bot.send_message(text=parse_latest_fight(), chat_id=message.chat.id, parse_mode='Markdown')
     if message.text.lower() == "healthcheck":
-        bot.send_message(text=parse_latest_fight(), chat_id=message.chat.id, parse_mode='I am working')
+        bot.send_message(text="I am working", chat_id=message.chat.id)
 
 
 def parse_latest_fight() -> str:
@@ -145,7 +145,7 @@ def debug():
 
 
 def start_bot():
-    bot.polling(none_stop=True, timeout=60)
+    bot.polling(none_stop=True, timeout=60, skip_pending=True)
 
 
 if __name__ == '__main__':
