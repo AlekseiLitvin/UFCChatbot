@@ -65,13 +65,19 @@ def check_fight(fight_id: str) -> str:
     event_start_date = datetime.strptime(event['StartTime'], '%Y-%m-%dT%H:%MZ').strftime("%d %b %Y")
 
     must_watch = []
+    current_segment = ""
     for fight in event['FightCard']:
         awarded_fight = is_awarded_fight(fight)
         early_finish = is_early_finish(fight)
         if awarded_fight or early_finish:
             fight_name = get_fight_name(fight)
             fight_length = get_fight_length(fight)
-            must_watch.append(f" {fight_length} {fight_name}")
+            fight_number = len(event['FightCard']) - fight['FightOrder'] + 1
+            fight_segment = fight['CardSegment']
+            if current_segment == "" or fight_segment != current_segment:
+                current_segment = fight_segment
+                must_watch.append(f"*{fight_segment}")
+            must_watch.append(f"{fight_number}. {fight_length} {fight_name}")
     must_watch_string = '\n'.join(must_watch)
     return f"*{name}, {event_start_date}* \nTotal time: {timedelta(seconds=total_time)}\n{must_watch_string}"
 
@@ -141,7 +147,7 @@ def is_awarded_fight(fight: dict) -> bool:
 
 
 def debug():
-    return parse_latest_fight()
+    print(parse_latest_fight())
 
 
 def start_bot():
@@ -149,5 +155,5 @@ def start_bot():
 
 
 if __name__ == '__main__':
-    # debug()
-    start_bot()
+    debug()
+    # start_bot()
