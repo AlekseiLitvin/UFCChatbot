@@ -9,7 +9,6 @@ token = '1725310174:AAGwJv_i1eBrv0DZdjHQ7GM4tJdgKVRaXu0'
 bot = telebot.TeleBot(token=token, parse_mode=None)
 
 total_time = 0  # The total time of all fights
-olga_chat_id = 406082320
 
 
 @bot.message_handler(commands=['start', 'help'])
@@ -73,13 +72,25 @@ def check_fight(fight_id: str) -> str:
             fight_name = get_fight_name(fight)
             fight_length = get_fight_length(fight)
             fight_number = len(event['FightCard']) - fight['FightOrder'] + 1
-            fight_segment = fight['CardSegment']
+            fight_segment = get_fight_segment(fight)
             if current_segment == "" or fight_segment != current_segment:
                 current_segment = fight_segment
-                must_watch.append(f"*{fight_segment}")
+                must_watch.append(f"*{fight_segment}*")
             must_watch.append(f"{fight_number}. {fight_length} {fight_name}")
     must_watch_string = '\n'.join(must_watch)
     return f"*{name}, {event_start_date}* \nTotal time: {timedelta(seconds=total_time)}\n{must_watch_string}"
+
+
+def get_fight_segment(fight) -> str:
+    segment = fight['CardSegment']
+    if segment == "Main":
+        return "Main card"
+    if segment == "Prelims1":
+        return "Prelims"
+    if segment == "Prelims2":
+        return "Early prelims"
+    else:
+        return segment
 
 
 def get_fight_length(fight: dict) -> str:
@@ -155,5 +166,5 @@ def start_bot():
 
 
 if __name__ == '__main__':
-    debug()
-    # start_bot()
+    # debug()
+    start_bot()
