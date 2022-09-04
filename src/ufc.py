@@ -165,6 +165,11 @@ def start_bot():
     bot.polling(none_stop=True, timeout=60, skip_pending=True)
 
 
+def start_local_bot():
+    bot.send_message(text=parse_latest_fight(), chat_id=448714424, parse_mode='Markdown')
+
+
 if __name__ == '__main__':
     # debug()
-    start_bot()
+    # start_bot()
+    start_local_bot()
